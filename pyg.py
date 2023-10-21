@@ -1,24 +1,26 @@
-import banana_dev as banana
+# pip3 install banana-dev
 
-api_key = "insert API key"
-model_key = "insert model key"
-print("this is Pygmalion! What is your prompt?")
-def call_model(prompt):
-	out = banana.run(api_key, model_key, prompt)
-	return out
+import banana_dev as client
 
-while True:
-	print("type your prompt:")
-	user_prompt = input('')
-	if user_prompt == "stop":
-		exit()
-		
-model_inputs = {
+# Create a reference to your project on Banana
+my_client = client.Client(
+    api_key="daaf1805-4bcc-4109-9548-f90ffd28c660",
+    # model_key="", # for SDK versions < 6.0.0, you need to pass in an empty model_key
+    url="https://bananapyg-lo0j9untda.run.banana.dev",
+)
 
-"max_new_tokens": 5,
-
-"prompt": user_prompt,
-
+# Specify the call's input JSON, what you expect 
+# to receive in your Potassium app. Here is an 
+# example for a basic BERT endpoint:
+inputs = {
+    "prompt": "In the summer I like [MASK].",
 }
-model_response = call_model(prompt=model_inputs)
-print(model_response)
+
+# Call your project's inference endpoint on Banana.
+# If you have set up your Potassium app with a
+# non-default endpoint, change the first 
+# method argument ("/")to specify a 
+# different route.
+result, meta = my_client.call("/", inputs)
+
+print(result)
